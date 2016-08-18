@@ -37,7 +37,18 @@
       <name>Xianglin Gao</name>
       <email>xlgao@zju.edu.cn</email>
     </developer>
+    <developer>
+      <id>Jimmy-Xu</id>
+        <name>Jimmy Xu</name>
+       <email>xjimmyshcn@gmail.com</email>
+    </developer>
   </developers>
+
+  <scm>
+   <connection>scm:git:ssh://github.com/jenkinsci/hyper-commons-plugin.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/jenkinsci/hyper-commons-plugin.git</developerConnection>
+    <url>https://github.com/jenkinsci/hyper-commons-plugin</url>
+  </scm>
 
   <repositories>
     <repository>
