@@ -1,7 +1,7 @@
 # hyper-commons-plugin
 =======================
 
-[![Build Status](https://travis-ci.org/hyperhq/hyper-commons-plugin.svg?branch=master)](https://travis-ci.org/hyperhq/hyper-commons-plugin)
+[![Build Status](https://travis-ci.org/jenkinsci/hyper-commons-plugin.svg?branch=master)](https://travis-ci.org/jenkinsci/hyper-commons-plugin)
 
 This plugin provides common functionality for integrating Jenkins with Hyper_.
 
