@@ -45,8 +45,8 @@
   </developers>
 
   <scm>
-   <connection>scm:git:ssh://github.com/jenkinsci/hyper-commons-plugin.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/jenkinsci/hyper-commons-plugin.git</developerConnection>
+   <connection>scm:git:git://github.com/jenkinsci/hyper-commons-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:jenkinsci/hyper-commons-plugin.git</developerConnection>
     <url>https://github.com/jenkinsci/hyper-commons-plugin</url>
   </scm>
 
