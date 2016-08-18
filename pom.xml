@@ -10,7 +10,7 @@
   </parent>
   <groupId>sh.hyper.plugins</groupId>
   <artifactId>hyper-commons</artifactId>
-  <version>0.1.2-SNAPSHOT</version>
+  <version>0.1.2</version>
   <packaging>hpi</packaging>
 
   <properties>
@@ -47,7 +47,7 @@
    <connection>scm:git:git://github.com/jenkinsci/hyper-commons-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/hyper-commons-plugin.git</developerConnection>
     <url>https://github.com/jenkinsci/hyper-commons-plugin</url>
-    <tag>HEAD</tag>
+    <tag>hyper-commons-0.1.2</tag>
   </scm>
 
   <repositories>
