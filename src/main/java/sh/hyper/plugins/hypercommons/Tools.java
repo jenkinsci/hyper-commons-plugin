@@ -119,7 +119,9 @@ public class Tools extends Plugin implements Describable<Tools> {
 
             try {
                 String jsonStr;
-                if (dockerEmail != null && dockerUsername != null && dockerPassword != null) {
+                if (dockerEmail != null && dockerUsername != null && dockerPassword != null
+			&& !dockerEmail.equals("") && !dockerUsername.equals("") && !dockerPassword.equals("")
+		) {
                     String userNameAndPassword = dockerUsername + ":" + dockerPassword;
                     byte[] base64Byte = Base64.getEncoder().encode(userNameAndPassword.getBytes("UTF-8"));
                     String base64Str = new String(base64Byte, "UTF-8");
