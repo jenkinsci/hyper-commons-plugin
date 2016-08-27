@@ -27,20 +27,21 @@
 
   <f:section title="Hyper Config">
 
-      <f:entry title="${%Hyper_ Access Key ID}">
+      <f:entry title="${%Hyper_ Access Key}">
         <f:textbox field="hyperAccessId" />
       </f:entry>
-      <f:entry title="${%Hyper_ Secret Access Key}">
+      <f:entry title="${%Hyper_ Secret Key}">
         <f:password field="hyperSecretKey" />
       </f:entry>
-      <f:entry title="${%DockerHub Email}">
-          <f:textbox field="dockerEmail" />
-      </f:entry>
+
       <f:entry title="${%DockerHub UserName}">
           <f:textbox field="dockerUserName" />
       </f:entry>
       <f:entry title="${%DockerHub PassWord}">
           <f:password field="dockerPassWord" />
+      </f:entry>
+      <f:entry title="${%DockerHub Email}">
+          <f:textbox field="dockerEmail" />
       </f:entry>
 
       <f:validateButton
