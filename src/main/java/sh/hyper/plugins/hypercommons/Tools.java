@@ -57,8 +57,8 @@ public class Tools extends Plugin implements Describable<Tools> {
         private String hyperAccessId;
         private String hyperSecretKey;
         private String dockerEmail;
-        private String dockerUserName;
-        private String dockerPassWord;
+        private String dockerUsername;
+        private String dockerPassword;
 
         public DescriptorImpl() {
             load();
@@ -69,8 +69,8 @@ public class Tools extends Plugin implements Describable<Tools> {
             hyperAccessId = formData.getString("hyperAccessId");
             hyperSecretKey = formData.getString("hyperSecretKey");
             dockerEmail = formData.getString("dockerEmail");
-            dockerUserName = formData.getString("dockerUserName");
-            dockerPassWord = formData.getString("dockerPassWord");
+            dockerUsername = formData.getString("dockerUsername");
+            dockerPassword = formData.getString("dockerPassword");
 
             save();
 
@@ -89,12 +89,12 @@ public class Tools extends Plugin implements Describable<Tools> {
             return dockerEmail;
         }
 
-        public String getDockerUserName() {
-            return dockerUserName;
+        public String getDockerUsername() {
+            return dockerUsername;
         }
 
-        public String getDockerPassWord() {
-            return dockerPassWord;
+        public String getDockerPassword() {
+            return dockerPassword;
         }
 
 
@@ -107,21 +107,21 @@ public class Tools extends Plugin implements Describable<Tools> {
         public FormValidation doSaveCredential(@QueryParameter("hyperAccessId") final String hyperAccessId,
                                                @QueryParameter("hyperSecretKey") final String hyperSecretKey,
                                                @QueryParameter("dockerEmail") final String dockerEmail,
-                                               @QueryParameter("dockerUserName") final String dockerUserName,
-                                               @QueryParameter("dockerPassWord") final String dockerPassWord) throws IOException, ServletException {
+                                               @QueryParameter("dockerUsername") final String dockerUsername,
+                                               @QueryParameter("dockerPassword") final String dockerPassword) throws IOException, ServletException {
             this.hyperAccessId = hyperAccessId;
             this.hyperSecretKey = hyperSecretKey;
             this.dockerEmail = dockerEmail;
-            this.dockerUserName = dockerUserName;
-            this.dockerPassWord = dockerPassWord;
+            this.dockerUsername = dockerUsername;
+            this.dockerPassword = dockerPassword;
 
             save();
 
             try {
                 String jsonStr;
-                if (dockerEmail != null && dockerUserName != null && dockerPassWord != null) {
-                    String userNameAndPassWord = dockerUserName + ":" + dockerPassWord;
-                    byte[] base64Byte = Base64.getEncoder().encode(userNameAndPassWord.getBytes("UTF-8"));
+                if (dockerEmail != null && dockerUsername != null && dockerPassword != null) {
+                    String userNameAndPassword = dockerUsername + ":" + dockerPassword;
+                    byte[] base64Byte = Base64.getEncoder().encode(userNameAndPassword.getBytes("UTF-8"));
                     String base64Str = new String(base64Byte, "UTF-8");
 
                     jsonStr = "{\"auths\": {" +

@@ -34,11 +34,11 @@
         <f:password field="hyperSecretKey" />
       </f:entry>
 
-      <f:entry title="${%DockerHub UserName}">
-          <f:textbox field="dockerUserName" />
+      <f:entry title="${%DockerHub Username}">
+          <f:textbox field="dockerUsername" />
       </f:entry>
-      <f:entry title="${%DockerHub PassWord}">
-          <f:password field="dockerPassWord" />
+      <f:entry title="${%DockerHub Password}">
+          <f:password field="dockerPassword" />
       </f:entry>
       <f:entry title="${%DockerHub Email}">
           <f:textbox field="dockerEmail" />
@@ -46,7 +46,7 @@
 
       <f:validateButton
               title="${%Save credential}" progress="${%saving...}"
-              method="saveCredential" with="hyperAccessId,hyperSecretKey,dockerEmail,dockerUserName,dockerPassWord" />
+              method="saveCredential" with="hyperAccessId,hyperSecretKey,dockerEmail,dockerUsername,dockerPassword" />
 
       <f:validateButton
               title="${%Test connection to Hyper_}" progress="${%testing...}"

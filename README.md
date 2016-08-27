@@ -1,5 +1,5 @@
-# hyper-commons-plugin
-=======================
+hyper-commons-plugin
+=====================
 
 [![Build Status](https://travis-ci.org/jenkinsci/hyper-commons-plugin.svg?branch=master)](https://travis-ci.org/jenkinsci/hyper-commons-plugin)
 
@@ -10,15 +10,19 @@ This plugin provides common functionality for integrating Jenkins with Hyper_.
 - [Features](#features)
 - [Use plugin](#use-plugin)
 	- [Prerequisites](#prerequisites)
-	- [Install plugin manually](#install-plugin-by-manually)
 	- [Config plugin](#config-plugin)
-	- [Install hypercli](#install-hypercli)
+	- [Config job](#config-job)
+	- [Build job](#build-job)
+	- [View build result](#view-build-result)
 - [Build plugin](#build-plugin)
 	- [Prerequisites](#prerequisites)
 	- [Compile](#compile)
 	- [Test](#test)
 	- [Package](#package)
-	- [Install](#install)
+	- [Install hyper-commons-plugin](#install-hyper-commons-plugin)
+		- [In local dev jenkins server](#in-local-dev-jenkins-server)
+		- [In standalone jenkins server](#in-standalone-jenkins-server)
+- [Release plugin](#release-plugin)
 
 <!-- /TOC -->
 
@@ -35,36 +39,31 @@ Plugin currently supports the following features:
 ## Prerequisites
 
 - Jenkins
-- hypercommon.hpi
-- Hyper_ credential
-
-## Install plugin manually
-
-open Jenkins Web UI in web browser
-
-get pre-build `hyper-commons.hpi`
-
-```
-Manage Jenkins -> Manage Plugins -> Advanced -> Upload Plugin
-```
+- hyper-commons
+- Hyper_ credential(get from https://console.hyper.sh)
 
 ## Config plugin
 
-login https://console.hyper.sh to receive a `Hyper_ credential`.
-
 ```
 Manage Jenkins -> Configure System -> Hyper Config
+  -> Hyper_ Access Key
+  -> Hyper_ Secret Key
+  -> DockerHub Username
+  -> DockerHub Password
+  -> DockerHub Email
+
+Manage Jenkins -> Configure System -> Hypercli Install
 ```
-![](images/config-plugin.PNG)
+![](images/config-system.PNG)
 
-## Install hypercli
+## Config job
+![](images/config-job.PNG)
 
-```
-Manage Jenkins -> Configure System ->Install hypercli
-```
+## Build job
+![](images/build-now.PNG)
 
-![](images/install-hypercli.PNG)
-
+## View build result
+![](images/console-output.PNG)
 
 # Build plugin
 
@@ -88,7 +87,7 @@ $ mvn test
 
 ## Package
 
-> **output**: target/hypercommon.hpi
+> **output**: target/hyper-commons.hpi
 
 compile + test + package
 
@@ -99,14 +98,29 @@ $ mvn package
 $ mvn package -DskipTests
 ```
 
-## Install
+## Install hyper-commons-plugin
 
-> **target**: ~/.m2/repository/sh/hyper/plugins/hyper-commons/0.1-SNAPSHOT/hyper-commons-0.1-SNAPSHOT.hpi
+### In local dev jenkins server
+```
+//start jenkins server
+$ mvn hpi:run -Djetty.port=8090
 
-compile + test + package + install
+//open jenkins web ui
+http://<host_ip>:8090/jenkins
+```
+
+### In standalone jenkins server
+
+open Jenkins Web UI in web browser
+
+get pre-build `hyper-commons.hpi`
 
 ```
-$ mvn install
+Manage Jenkins -> Manage Plugins -> Advanced -> Upload Plugin
+```
+![](images/upload-plugin.PNG)
 
-//skip test
-$ mvn install -DskipTests
+# Release plugin
+```
+$ mvn release:prepare release:perform
+```
