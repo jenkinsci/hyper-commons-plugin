@@ -109,12 +109,20 @@ public class Tools extends Plugin implements Describable<Tools> {
                                                @QueryParameter("dockerEmail") final String dockerEmail,
                                                @QueryParameter("dockerUserName") final String dockerUserName,
                                                @QueryParameter("dockerPassWord") final String dockerPassWord) throws IOException, ServletException {
+            this.hyperAccessId = hyperAccessId;
+            this.hyperSecretKey = hyperSecretKey;
+            this.dockerEmail = dockerEmail;
+            this.dockerUserName = dockerUserName;
+            this.dockerPassWord = dockerPassWord;
+
+            save();
+
             try {
                 String jsonStr;
                 if (dockerEmail != null && dockerUserName != null && dockerPassWord != null) {
-                    String userNameAndPassWord = dockerUserName + ":" +dockerPassWord;
+                    String userNameAndPassWord = dockerUserName + ":" + dockerPassWord;
                     byte[] base64Byte = Base64.getEncoder().encode(userNameAndPassWord.getBytes("UTF-8"));
-                    String base64Str = new String(base64Byte,"UTF-8");
+                    String base64Str = new String(base64Byte, "UTF-8");
 
                     jsonStr = "{\"auths\": {" +
                             "\"https://index.docker.io/v1/\": {" +
@@ -139,10 +147,6 @@ public class Tools extends Plugin implements Describable<Tools> {
                             "}" +
                             "}";
                 }
-
-
-
-
 
                 OutputStreamWriter jsonWriter = null;
                 String configPath;
@@ -241,7 +245,7 @@ public class Tools extends Plugin implements Describable<Tools> {
                 }
                 hyperCliPath = jenkinsHome.getPath() + "/bin/hyper";
 
-                try{
+                try {
                     os = new FileOutputStream(hyperCliPath);
                     byte[] buffer = new byte[4 * 1024];
                     int read;
