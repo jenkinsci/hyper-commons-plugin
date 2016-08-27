@@ -27,19 +27,28 @@
 
   <f:section title="Hyper Config">
 
-      <f:entry title="${%Access Key ID}">
-        <f:textbox field="accessId" />
+      <f:entry title="${%Hyper_ Access Key ID}">
+        <f:textbox field="hyperAccessId" />
       </f:entry>
-      <f:entry title="${%Secret Access Key}">
-        <f:password field="secretKey" />
+      <f:entry title="${%Hyper_ Secret Access Key}">
+        <f:password field="hyperSecretKey" />
+      </f:entry>
+      <f:entry title="${%DockerHub Email}">
+          <f:textbox field="dockerEmail" />
+      </f:entry>
+      <f:entry title="${%DockerHub UserName}">
+          <f:textbox field="dockerUserName" />
+      </f:entry>
+      <f:entry title="${%DockerHub PassWord}">
+          <f:password field="dockerPassWord" />
       </f:entry>
 
       <f:validateButton
               title="${%Save credential}" progress="${%saving...}"
-              method="saveCredential" with="secretKey,accessId" />
+              method="saveCredential" with="hyperAccessId,hyperSecretKey,dockerEmail,dockerUserName,dockerPassWord" />
 
       <f:validateButton
-              title="${%Test connection}" progress="${%testing...}"
+              title="${%Test connection to Hyper_}" progress="${%testing...}"
               method="testConnection"/>
 
   </f:section>

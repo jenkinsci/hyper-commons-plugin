@@ -39,6 +39,7 @@ import javax.servlet.ServletException;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Base64;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -53,8 +54,11 @@ public class Tools extends Plugin implements Describable<Tools> {
 
     @Extension
     public static final class DescriptorImpl extends Descriptor<Tools> {
-        private String accessId;
-        private String secretKey;
+        private String hyperAccessId;
+        private String hyperSecretKey;
+        private String dockerEmail;
+        private String dockerUserName;
+        private String dockerPassWord;
 
         public DescriptorImpl() {
             load();
@@ -62,21 +66,37 @@ public class Tools extends Plugin implements Describable<Tools> {
 
         @Override
         public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
-            accessId = formData.getString("accessId");
-            secretKey = formData.getString("secretKey");
+            hyperAccessId = formData.getString("hyperAccessId");
+            hyperSecretKey = formData.getString("hyperSecretKey");
+            dockerEmail = formData.getString("dockerEmail");
+            dockerUserName = formData.getString("dockerUserName");
+            dockerPassWord = formData.getString("dockerPassWord");
 
             save();
 
             return super.configure(req, formData);
         }
 
-        public String getAccessId() {
-            return accessId;
+        public String getHyperAccessId() {
+            return hyperAccessId;
         }
 
-        public String getSecretKey() {
-            return secretKey;
+        public String getHyperSecretKey() {
+            return hyperSecretKey;
         }
+
+        public String getDockerEmail() {
+            return dockerEmail;
+        }
+
+        public String getDockerUserName() {
+            return dockerUserName;
+        }
+
+        public String getDockerPassWord() {
+            return dockerPassWord;
+        }
+
 
         @Override
         public String getDisplayName() {
@@ -84,16 +104,46 @@ public class Tools extends Plugin implements Describable<Tools> {
         }
 
         //save credential
-        public FormValidation doSaveCredential(@QueryParameter("accessId") final String accessId,
-                                               @QueryParameter("secretKey") final String secretKey) throws IOException, ServletException {
+        public FormValidation doSaveCredential(@QueryParameter("hyperAccessId") final String hyperAccessId,
+                                               @QueryParameter("hyperSecretKey") final String hyperSecretKey,
+                                               @QueryParameter("dockerEmail") final String dockerEmail,
+                                               @QueryParameter("dockerUserName") final String dockerUserName,
+                                               @QueryParameter("dockerPassWord") final String dockerPassWord) throws IOException, ServletException {
             try {
-                String jsonStr = "{\"clouds\": {" +
-                        "\"tcp://us-west-1.hyper.sh:443\": {" +
-                        "\"accesskey\": " + "\"" + accessId + "\"," +
-                        "\"secretkey\": " + "\"" + secretKey + "\"" +
-                        "}" +
-                        "}" +
-                        "}";
+                String jsonStr;
+                if (dockerEmail != null && dockerUserName != null && dockerPassWord != null) {
+                    String userNameAndPassWord = dockerUserName + ":" +dockerPassWord;
+                    byte[] base64Byte = Base64.getEncoder().encode(userNameAndPassWord.getBytes("UTF-8"));
+                    String base64Str = new String(base64Byte,"UTF-8");
+
+                    jsonStr = "{\"auths\": {" +
+                            "\"https://index.docker.io/v1/\": {" +
+                            "\"auth\": " + "\"" + base64Str + "\"," +
+                            "\"email\": " + "\"" + dockerEmail + "\"" +
+                            "}" +
+                            "}," +
+                            "\"clouds\": {" +
+                            "\"tcp://us-west-1.hyper.sh:443\": {" +
+                            "\"accesskey\": " + "\"" + hyperAccessId + "\"," +
+                            "\"secretkey\": " + "\"" + hyperSecretKey + "\"" +
+                            "}" +
+                            "}" +
+                            "}";
+                } else {
+                    jsonStr = "{\"auths\": {}," +
+                            "\"clouds\": {" +
+                            "\"tcp://us-west-1.hyper.sh:443\": {" +
+                            "\"accesskey\": " + "\"" + hyperAccessId + "\"," +
+                            "\"secretkey\": " + "\"" + hyperSecretKey + "\"" +
+                            "}" +
+                            "}" +
+                            "}";
+                }
+
+
+
+
+
                 OutputStreamWriter jsonWriter = null;
                 String configPath;
                 File jenkinsHome = Jenkins.getInstance().getRootDir();
