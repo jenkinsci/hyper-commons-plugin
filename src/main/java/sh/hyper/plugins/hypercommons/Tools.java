@@ -210,7 +210,7 @@ public class Tools extends Plugin implements Describable<Tools> {
                     String jenkinsHome = Jenkins.getInstance().getRootDir().getPath();
                     String hyperCliPath = jenkinsHome + "/bin/hyper";
                     String configPath = jenkinsHome + "/.hyper";
-                    String command = hyperCliPath + " --config " + configPath + " info";
+                    String command = hyperCliPath + " --config " + configPath + " --host=" + this.hyperUrl + " info";
                     Runtime runtime = Runtime.getRuntime();
                     hypercli = runtime.exec(command);
                 } catch (IOException e) {
