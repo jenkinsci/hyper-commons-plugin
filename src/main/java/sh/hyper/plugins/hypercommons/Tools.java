@@ -54,6 +54,7 @@ public class Tools extends Plugin implements Describable<Tools> {
 
     @Extension
     public static final class DescriptorImpl extends Descriptor<Tools> {
+        private String hyperUrl;
         private String hyperAccessId;
         private String hyperSecretKey;
         private String dockerEmail;
@@ -66,6 +67,7 @@ public class Tools extends Plugin implements Describable<Tools> {
 
         @Override
         public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
+            hyperUrl = formData.getString("hyperUrl");
             hyperAccessId = formData.getString("hyperAccessId");
             hyperSecretKey = formData.getString("hyperSecretKey");
             dockerEmail = formData.getString("dockerEmail");
@@ -75,6 +77,10 @@ public class Tools extends Plugin implements Describable<Tools> {
             save();
 
             return super.configure(req, formData);
+        }
+
+        public String getHyperUrl() {
+            return hyperUrl;
         }
 
         public String getHyperAccessId() {
@@ -100,15 +106,17 @@ public class Tools extends Plugin implements Describable<Tools> {
 
         @Override
         public String getDisplayName() {
-            return "Hyper common plugin";
+            return "Hyper_ Commons Plugin";
         }
 
         //save credential
-        public FormValidation doSaveCredential(@QueryParameter("hyperAccessId") final String hyperAccessId,
+        public FormValidation doSaveCredential(@QueryParameter("hyperUrl") final String hyperUrl,
+                                               @QueryParameter("hyperAccessId") final String hyperAccessId,
                                                @QueryParameter("hyperSecretKey") final String hyperSecretKey,
                                                @QueryParameter("dockerEmail") final String dockerEmail,
                                                @QueryParameter("dockerUsername") final String dockerUsername,
                                                @QueryParameter("dockerPassword") final String dockerPassword) throws IOException, ServletException {
+            this.hyperUrl = hyperUrl;
             this.hyperAccessId = hyperAccessId;
             this.hyperSecretKey = hyperSecretKey;
             this.dockerEmail = dockerEmail;
@@ -120,8 +128,8 @@ public class Tools extends Plugin implements Describable<Tools> {
             try {
                 String jsonStr;
                 if (dockerEmail != null && dockerUsername != null && dockerPassword != null
-			&& !dockerEmail.equals("") && !dockerUsername.equals("") && !dockerPassword.equals("")
-		) {
+                        && !dockerEmail.equals("") && !dockerUsername.equals("") && !dockerPassword.equals("")
+                        ) {
                     String userNameAndPassword = dockerUsername + ":" + dockerPassword;
                     byte[] base64Byte = Base64.getEncoder().encode(userNameAndPassword.getBytes("UTF-8"));
                     String base64Str = new String(base64Byte, "UTF-8");
@@ -133,7 +141,7 @@ public class Tools extends Plugin implements Describable<Tools> {
                             "}" +
                             "}," +
                             "\"clouds\": {" +
-                            "\"tcp://us-west-1.hyper.sh:443\": {" +
+                            "\"" + hyperUrl + "\": {" +
                             "\"accesskey\": " + "\"" + hyperAccessId + "\"," +
                             "\"secretkey\": " + "\"" + hyperSecretKey + "\"" +
                             "}" +
@@ -142,7 +150,7 @@ public class Tools extends Plugin implements Describable<Tools> {
                 } else {
                     jsonStr = "{\"auths\": {}," +
                             "\"clouds\": {" +
-                            "\"tcp://us-west-1.hyper.sh:443\": {" +
+                            "\"" + hyperUrl + "\": {" +
                             "\"accesskey\": " + "\"" + hyperAccessId + "\"," +
                             "\"secretkey\": " + "\"" + hyperSecretKey + "\"" +
                             "}" +
