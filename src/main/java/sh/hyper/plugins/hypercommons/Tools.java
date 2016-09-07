@@ -230,7 +230,9 @@ public class Tools extends Plugin implements Describable<Tools> {
                     hypercli.waitFor(10, TimeUnit.SECONDS);
                 }
 
-                removeTmpCredential();
+                if (!removeTmpCredential()) {
+                    return FormValidation.ok("connection test failed!");
+                }
                 
                 if (hypercli.exitValue() == 0) {
                     return FormValidation.ok("connection test succeeded!");
