@@ -103,7 +103,7 @@ public class Tools extends Plugin implements Describable<Tools> {
             return dockerPassword;
         }
 
-        public boolean createTmpCredential() {
+        public boolean createTmpCredential() throws IOException {
             try {
                 String jsonStr;
                 if (dockerEmail != null && dockerUsername != null && dockerPassword != null
@@ -177,6 +177,7 @@ public class Tools extends Plugin implements Describable<Tools> {
                 }
                 return true;
             } catch (Exception e) {
+                e.printStackTrace();
                 return false;
             }
         }
