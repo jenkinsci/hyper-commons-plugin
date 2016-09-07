@@ -103,28 +103,7 @@ public class Tools extends Plugin implements Describable<Tools> {
             return dockerPassword;
         }
 
-
-        @Override
-        public String getDisplayName() {
-            return "Hyper_ Commons Plugin";
-        }
-
-        //save credential
-        public FormValidation doSaveCredential(@QueryParameter("hyperUrl") final String hyperUrl,
-                                               @QueryParameter("hyperAccessId") final String hyperAccessId,
-                                               @QueryParameter("hyperSecretKey") final String hyperSecretKey,
-                                               @QueryParameter("dockerEmail") final String dockerEmail,
-                                               @QueryParameter("dockerUsername") final String dockerUsername,
-                                               @QueryParameter("dockerPassword") final String dockerPassword) throws IOException, ServletException {
-            this.hyperUrl = hyperUrl;
-            this.hyperAccessId = hyperAccessId;
-            this.hyperSecretKey = hyperSecretKey;
-            this.dockerEmail = dockerEmail;
-            this.dockerUsername = dockerUsername;
-            this.dockerPassword = dockerPassword;
-
-            save();
-
+        public boolean createTmpCredential() {
             try {
                 String jsonStr;
                 if (dockerEmail != null && dockerUsername != null && dockerPassword != null
@@ -160,22 +139,21 @@ public class Tools extends Plugin implements Describable<Tools> {
 
                 OutputStreamWriter jsonWriter = null;
                 String configPath;
-                File jenkinsHome = Jenkins.getInstance().getRootDir();
 
-                File hyperPath = new File(jenkinsHome.getPath() + "/.hyper");
+                File hyperPath = new File("/tmp/hyper-commons-plugin");
                 try {
                     if (!hyperPath.exists()) {
-                        if (!hyperPath.mkdir()) return FormValidation.ok("Saving credentials failed!");
+                        if (!hyperPath.mkdir()) return false;
                     }
                 } catch (SecurityException e) {
                     e.printStackTrace();
                 }
-                configPath = jenkinsHome.getPath() + "/.hyper/config.json";
+                configPath = hyperPath.getPath() + "/config.json";
 
                 File config = new File(configPath);
                 if (!config.exists()) {
                     try {
-                        if (!config.createNewFile()) return FormValidation.ok("Saving credentials failed!");
+                        if (!config.createNewFile()) return false;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -197,38 +175,70 @@ public class Tools extends Plugin implements Describable<Tools> {
                         e.printStackTrace();
                     }
                 }
-                return FormValidation.ok("Credentials saved!");
+                return true;
             } catch (Exception e) {
-                return FormValidation.error("Saving credentials error : " + e.getMessage());
+                return false;
             }
         }
 
-        public FormValidation doTestConnection() throws IOException, ServletException {
+        public boolean removeTmpCredential() {
+            File config = new File("/tmp/hyper-commons-plugin/config.json");
+            File configPath = new File("/tmp/hyper-commons-plugin");
+            return config.exists() && configPath.exists() && config.delete() && configPath.delete();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return "Hyper_ Commons Plugin";
+        }
+
+        public FormValidation doTestConnection(@QueryParameter("hyperUrl") final String hyperUrl,
+                                               @QueryParameter("hyperAccessId") final String hyperAccessId,
+                                               @QueryParameter("hyperSecretKey") final String hyperSecretKey,
+                                               @QueryParameter("dockerEmail") final String dockerEmail,
+                                               @QueryParameter("dockerUsername") final String dockerUsername,
+                                               @QueryParameter("dockerPassword") final String dockerPassword) throws IOException, ServletException {
             try {
+                this.hyperUrl = hyperUrl;
+                this.hyperAccessId = hyperAccessId;
+                this.hyperSecretKey = hyperSecretKey;
+                this.dockerEmail = dockerEmail;
+                this.dockerUsername = dockerUsername;
+                this.dockerPassword = dockerPassword;
+
+                if (!createTmpCredential()) {
+                    return FormValidation.ok("connection test failed!");
+                }
+
                 Process hypercli = null;
                 try {
                     String jenkinsHome = Jenkins.getInstance().getRootDir().getPath();
                     String hyperCliPath = jenkinsHome + "/bin/hyper";
-                    String configPath = jenkinsHome + "/.hyper";
+                    String configPath = "/tmp/hyper-commons-plugin";
                     String command = hyperCliPath + " --config " + configPath + " --host=" + this.hyperUrl + " info";
                     Runtime runtime = Runtime.getRuntime();
                     hypercli = runtime.exec(command);
                 } catch (IOException e) {
+                    removeTmpCredential();
                     e.printStackTrace();
                 }
 
                 if (hypercli == null) {
+                    removeTmpCredential();
                     return FormValidation.ok("connection test failed!");
                 } else {
                     hypercli.waitFor(10, TimeUnit.SECONDS);
                 }
 
+                removeTmpCredential();
+                
                 if (hypercli.exitValue() == 0) {
                     return FormValidation.ok("connection test succeeded!");
                 } else {
                     return FormValidation.ok("connection test failed!");
                 }
             } catch (Exception e) {
+                removeTmpCredential();
                 return FormValidation.error("connection test error : " + e.getMessage());
             }
         }

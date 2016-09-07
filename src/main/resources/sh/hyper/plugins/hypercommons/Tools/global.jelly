@@ -49,13 +49,9 @@
         </f:entry>
 
         <f:validateButton
-                title="${%Save credential}" progress="${%saving...}"
-                method="saveCredential"
-                with="hyperUrl,hyperAccessId,hyperSecretKey,dockerEmail,dockerUsername,dockerPassword"/>
-
-        <f:validateButton
                 title="${%Test connection to Hyper_}" progress="${%testing...}"
-                method="testConnection"/>
+                method="testConnection"
+                with="hyperUrl,hyperAccessId,hyperSecretKey,dockerEmail,dockerUsername,dockerPassword"/>
 
     </f:section>
 
