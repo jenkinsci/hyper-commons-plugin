@@ -3,7 +3,7 @@ hyper-commons-plugin
 
 [![Build Status](https://travis-ci.org/jenkinsci/hyper-commons-plugin.svg?branch=master)](https://travis-ci.org/jenkinsci/hyper-commons-plugin)
 
-This plugin provides common functionality for integrating Jenkins with Hyper_.
+This plugin provides common functionality for integrating Jenkins with Hyper.sh.
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
@@ -30,7 +30,7 @@ This plugin provides common functionality for integrating Jenkins with Hyper_.
 Plugin currently supports the following features:
 
 - Install hyper cli
-- Set Hyper_ credentials
+- Set Hyper.sh credentials
 - Test connection to your account.
 
 
@@ -40,14 +40,14 @@ Plugin currently supports the following features:
 
 - Jenkins
 - hyper-commons
-- Hyper_ credential(get from https://console.hyper.sh)
+- Hyper.sh credential(get from https://console.hyper.sh)
 
 ## Config plugin
 
 ```
-Manage Jenkins -> Configure System -> Hyper Config
-  -> Hyper_ Access Key
-  -> Hyper_ Secret Key
+Manage Jenkins -> Configure System -> Hyper.sh Config
+  -> Hyper.sh Access Key
+  -> Hyper.sh Secret Key
   -> DockerHub Username
   -> DockerHub Password
   -> DockerHub Email
