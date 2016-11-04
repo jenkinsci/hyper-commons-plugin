@@ -25,12 +25,12 @@
   ~
   -->
 
-  <f:section title="Hyper Config">
+  <f:section title="Hyper.sh Config">
 
-      <f:entry title="${%Hyper_ Access Key}">
+      <f:entry title="${%Hyper.sh Access Key}">
         <f:textbox field="hyperAccessId" />
       </f:entry>
-      <f:entry title="${%Hyper_ Secret Key}">
+      <f:entry title="${%Hyper.sh Secret Key}">
         <f:password field="hyperSecretKey" />
       </f:entry>
 
@@ -45,11 +45,11 @@
       </f:entry>
 
       <f:validateButton
-              title="${%Save credential}" progress="${%saving...}"
+              title="${%Save Credentials}" progress="${%saving...}"
               method="saveCredential" with="hyperAccessId,hyperSecretKey,dockerEmail,dockerUsername,dockerPassword" />
 
       <f:validateButton
-              title="${%Test connection to Hyper_}" progress="${%testing...}"
+              title="${%Test connection to Hyper.sh}" progress="${%testing...}"
               method="testConnection"/>
 
   </f:section>
